@@ -90,7 +90,7 @@ export class ChecklistDatabase {
     }, []);
   }
   
-
+ 
   /** Add an item to to-do list */
   insertItem(parent: TodoItemNode, name: string) {
     if (parent.children) {
@@ -177,6 +177,41 @@ this.allData=data;
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
   };
+
+  filterRecursive(filterText: string, array: any[], property: string) {
+    let filteredData;
+
+    //make a copy of the data so we don't mutate the original
+    function copy(o: any) {
+      return Object.assign({}, o);
+    }
+
+    // has string
+    if (filterText) {
+      // need the string to match the property value
+      filterText = filterText.toLowerCase();
+      // copy obj so we don't mutate it and filter
+      filteredData = array.map(copy).filter(function x(y) {
+        if (y[property].toLowerCase().includes(filterText)) {
+          return true;
+        }
+        // if children match
+        if (y.children) {
+          return (y.children = y.children.map(copy).filter(x)).length;
+        }
+      });
+      // no string, return whole array
+    } else {
+      filteredData = array;
+    }
+
+    return filteredData;
+  }
+
+  filterTree(filterText: string) {
+    // use filter input text, return filtered TREE_DATA, use the 'name' object value
+    this.dataSource.data = this.filterRecursive(filterText,this.allData , 'item');
+  }
 
   /** Whether all the descendants of the node are selected. */
   descendantsAllSelected(node: TodoItemFlatNode): boolean {
@@ -285,6 +320,18 @@ this.allData=data;
   });
 }
   }
+
+
+  applyFilter(e: any) {
+    this.filterTree(e.target.value);
+    // show / hide based on state of filter string
+    if (e.target.value) {
+      this.treeControl.expandAll();
+    } else {
+      this.treeControl.collapseAll();
+    }
+  }
+
 }
 
 
