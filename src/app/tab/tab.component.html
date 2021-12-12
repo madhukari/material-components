@@ -1,0 +1,11 @@
+
+<fieldset>
+<legend>tab comp</legend>
+<h1>tab works</h1>
+
+parent<input type="text" name="message" [(ngModel)]="message">
+<fieldset>
+
+<br>
+<br>
+<app-communication  [message]="message" (newMessage)="setMessage($event)"></app-communication>
