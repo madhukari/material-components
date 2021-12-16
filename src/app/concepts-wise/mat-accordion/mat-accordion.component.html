@@ -1,0 +1,19 @@
+<button (click)="expandCollospse(1)">Expand All </button>
+<button (click)="expandCollospse(2)">Collapse All </button>
+    <mat-expansion-panel *ngFor="let dd of _DATA; first as isFirst" [expanded]="dd.expand" >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+        {{dd.name}}
+        </mat-panel-title>
+       
+        <mat-panel-description>
+          Type your name and age
+        </mat-panel-description>
+
+
+      </mat-expansion-panel-header>
+      <p> {{dd.name}}</p>
+<p> {{dd.name}}</p><p> {{dd.name}}</p>
+<p> {{dd.name}}</p>
+    </mat-expansion-panel>
+    

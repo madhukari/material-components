@@ -147,7 +147,7 @@ allData:any;
     this.treeControl = new FlatTreeControl<TodoItemFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-    _database.dataChange.subscribe(data => {
+    _database.dataChange.subscribe((data:any) => {
 this.allData=data;
       this.dataSource.data = data;
     });
@@ -178,41 +178,7 @@ this.allData=data;
     return flatNode;
   };
 
-  filterRecursive(filterText: string, array: any[], property: string) {
-    let filteredData;
-
-    //make a copy of the data so we don't mutate the original
-    function copy(o: any) {
-      return Object.assign({}, o);
-    }
-
-    // has string
-    if (filterText) {
-      // need the string to match the property value
-      filterText = filterText.toLowerCase();
-      // copy obj so we don't mutate it and filter
-      filteredData = array.map(copy).filter(function x(y) {
-        if (y[property].toLowerCase().includes(filterText)) {
-          return true;
-        }
-        // if children match
-        if (y.children) {
-          return (y.children = y.children.map(copy).filter(x)).length;
-        }
-      });
-      // no string, return whole array
-    } else {
-      filteredData = array;
-    }
-
-    return filteredData;
-  }
-
-  filterTree(filterText: string) {
-    // use filter input text, return filtered TREE_DATA, use the 'name' object value
-    this.dataSource.data = this.filterRecursive(filterText,this.allData , 'item');
-  }
-
+ 
   /** Whether all the descendants of the node are selected. */
   descendantsAllSelected(node: TodoItemFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
@@ -307,20 +273,6 @@ this.allData=data;
     const nestedNode = this.flatNodeMap.get(node);
     this._database.updateItem(nestedNode!, itemValue);
   }
-  filterChanged(event:any){
-    debugger
-    if(event.target.value==''){
-      this.dataSource.data=this.allData
-    }else{
-  let treeData=  this.treeControl.dataNodes.filter(treedata=>treedata.item.indexOf(event.target.value)>0)
-  sessionStorage.setItem('treeFilterData',JSON.stringify(treeData));
-  this._database.dataChange.subscribe((treeData1:any) => {
-    this.dataSource.data = JSON.parse(sessionStorage.getItem('treeFilterData')!);
-    console.log('this.dataSource.data ',this.dataSource.data );
-  });
-}
-  }
-
 
   applyFilter(e: any) {
     this.filterTree(e.target.value);
@@ -331,6 +283,41 @@ this.allData=data;
       this.treeControl.collapseAll();
     }
   }
+  filterRecursive(filterText: string, array: any[], property: string) {
+    let filteredData;
+
+    //make a copy of the data so we don't mutate the original
+    function copy(o: any) {
+      return Object.assign({}, o);
+    }
+
+    // has string
+    if (filterText) {
+      // need the string to match the property value
+      filterText = filterText.toLowerCase();
+      // copy obj so we don't mutate it and filter
+      filteredData = array.map(copy).filter(function x(y) {
+        if (y[property].toLowerCase().includes(filterText)) {
+          return true;
+        }
+        // if children match
+        if (y.children) {
+          return (y.children = y.children.map(copy).filter(x)).length;
+        }
+      });
+      // no string, return whole array
+    } else {
+      filteredData = array;
+    }
+
+    return filteredData;
+  }
+
+  filterTree(filterText: string) {
+    // use filter input text, return filtered TREE_DATA, use the 'name' object value
+    this.dataSource.data = this.filterRecursive(filterText,this.allData , 'item');
+  }
+
 
 }
 

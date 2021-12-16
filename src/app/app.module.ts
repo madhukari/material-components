@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatRadioModule,} from '@angular/material/radio';
 import {MatTreeModule}  from '@angular/material/tree';
+
 import {MatSortModule} from '@angular/material/sort';
 import {  MatCheckboxModule } from '@angular/material/checkbox';
 import { TabComponent } from './tab/tab.component';
@@ -26,7 +27,9 @@ import { CdkDragStart, CdkDropList, moveItemInArray } from '@angular/cdk/drag-dr
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpConfigInterceptor } from '../app/interceptors/httperror.interceptor';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { TreewithfilterComponent } from './components/treewithfilter/treewithfilter.component'; 
+import { TreewithfilterComponent } from './components/treewithfilter/treewithfilter.component';
+import { MatAccordionComponent } from './concepts-wise/mat-accordion/mat-accordion.component'; 
+import { MatExpansionModule }  from '@angular/material/expansion';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +38,7 @@ import { TreewithfilterComponent } from './components/treewithfilter/treewithfil
     CommunicationComponent,
     AdvancedTreeComponent,
     TreewithfilterComponent,
+    MatAccordionComponent,
 
   ],
   imports: [
@@ -57,6 +61,8 @@ import { TreewithfilterComponent } from './components/treewithfilter/treewithfil
     MatRadioModule,
     MatSortModule,
     DragDropModule,
+  MatExpansionModule,
+
   ],
   // providers: [WebService],
   providers: [ 
